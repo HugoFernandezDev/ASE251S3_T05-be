@@ -1,97 +1,68 @@
 package Agropacayales.valleGrande.service.impl;
 
-import Agropacayales.valleGrande.model.Cultivo;
-import Agropacayales.valleGrande.repository.CultivoRepository;
-import Agropacayales.valleGrande.service.CultivoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import Agropacayales.valleGrande.model.Cultivo;
+import Agropacayales.valleGrande.repository.CultivoRepository;
+import Agropacayales.valleGrande.service.CultivoService; 
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CultivoServiceImpl implements CultivoService {
+public class CultivoServiceImpl implements CultivoService { 
 
     @Autowired
-    private CultivoRepository cultivoRepository;
+    private CultivoRepository repository;
 
     @Override
-    public List<Cultivo> listarTodos() {
-        return cultivoRepository.findAll();
+    public List<Cultivo> listarTodos() { 
+        return repository.findAll(); 
     }
 
     @Override
-    public Optional<Cultivo> listarPorId(Long id) {
-        return cultivoRepository.findById(id);
+    public Optional<Cultivo> listarPorId(Long id) { 
+        return repository.findById(id); 
     }
 
     @Override
     public List<Cultivo> listarPorEstado(Boolean estado) {
-        return cultivoRepository.findByEstado(estado);
+        return repository.findByEstado(estado);
     }
 
     @Override
-    public Cultivo crear(Cultivo cultivo) {
-        validarCultivo(cultivo);
-        cultivo.setEstado(true);
-        return cultivoRepository.save(cultivo);
+    public Cultivo crear(Cultivo cultivo) { 
+        cultivo.setEstado(true); 
+        return repository.save(cultivo);
     }
 
     @Override
-    public Cultivo editar(Long id, Cultivo cultivo) {
-        Optional<Cultivo> existente = cultivoRepository.findById(id);
-        if (existente.isPresent()) {
-            validarCultivo(cultivo);
-            Cultivo cultivoActualizar = existente.get();
-            cultivoActualizar.setNombre(cultivo.getNombre());
-            cultivoActualizar.setTipoCultivo(cultivo.getTipoCultivo());
-            cultivoActualizar.setFrecuenciaRiegoDias(cultivo.getFrecuenciaRiegoDias());
-            cultivoActualizar.setTemperaturaIdeal(cultivo.getTemperaturaIdeal());
-            cultivoActualizar.setFechaSiembra(cultivo.getFechaSiembra());
-            cultivoActualizar.setRequiereSombra(cultivo.getRequiereSombra());
-            cultivoActualizar.setObservaciones(cultivo.getObservaciones());
-            return cultivoRepository.save(cultivoActualizar);
-        }
-        return null;
+    public Cultivo editar(Long id, Cultivo datos) { 
+        return repository.findById(id).map(c -> {
+            c.setNombre(datos.getNombre());
+            c.setTipoCultivo(datos.getTipoCultivo());
+            c.setFrecuenciaRiegoDias(datos.getFrecuenciaRiegoDias());
+            c.setTemperaturaIdeal(datos.getTemperaturaIdeal());
+            c.setFechaSiembra(datos.getFechaSiembra());
+            c.setRequiereSombra(datos.getRequiereSombra());
+            c.setObservaciones(datos.getObservaciones());
+            return repository.save(c);
+        }).orElseThrow(() -> new RuntimeException("Cultivo no encontrado"));
     }
 
     @Override
-    public Cultivo eliminar(Long id) {
-        Optional<Cultivo> existente = cultivoRepository.findById(id);
-        if (existente.isPresent()) {
-            Cultivo cultivo = existente.get();
-            cultivo.setEstado(false);
-            return cultivoRepository.save(cultivo);
-        }
-        return null;
+    public Cultivo eliminar(Long id) { 
+        return repository.findById(id).map(c -> {
+            c.setEstado(false);
+            return repository.save(c);
+        }).orElse(null);
     }
 
     @Override
     public Cultivo restaurar(Long id) {
-        Optional<Cultivo> existente = cultivoRepository.findById(id);
-        if (existente.isPresent()) {
-            Cultivo cultivo = existente.get();
-            cultivo.setEstado(true);
-            return cultivoRepository.save(cultivo);
-        }
-        return null;
-    }
-
-    private void validarCultivo(Cultivo cultivo) {
-        if (cultivo.getFrecuenciaRiegoDias() == null || cultivo.getFrecuenciaRiegoDias() <= 0) {
-            throw new IllegalArgumentException("La frecuencia de riego debe ser mayor que cero.");
-        }
-
-        if (cultivo.getTemperaturaIdeal() == null) {
-            throw new IllegalArgumentException("La temperatura ideal es obligatoria.");
-        }
-
-        if (cultivo.getNombre() == null || cultivo.getNombre().isBlank()) {
-            throw new IllegalArgumentException("El nombre del cultivo es obligatorio.");
-        }
-
-        if (cultivo.getTipoCultivo() == null || cultivo.getTipoCultivo().isBlank()) {
-            throw new IllegalArgumentException("El tipo de cultivo es obligatorio.");
-        }
+        return repository.findById(id).map(c -> {
+            c.setEstado(true);
+            return repository.save(c);
+        }).orElse(null);
     }
 }

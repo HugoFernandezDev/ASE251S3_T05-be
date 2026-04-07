@@ -1,11 +1,11 @@
 package Agropacayales.valleGrande.repository;
 
-import Agropacayales.valleGrande.model.Cultivo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import Agropacayales.valleGrande.model.Usuario;
 import java.util.List;
 
 @Repository
-public interface CultivoRepository extends JpaRepository<Cultivo, Long> {
-    List<Cultivo> findByEstado(Boolean estado);
+public interface UsuarioRepository extends JpaRepository<Usuario, Integer> { 
+    List<Usuario> findByEstado(Boolean estado);
 }

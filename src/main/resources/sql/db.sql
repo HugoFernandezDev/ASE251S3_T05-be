@@ -30,3 +30,23 @@ CREATE TABLE cultivos (
 );
 
 select * from cultivos;
+
+CREATE TABLE usuarios (
+    id_usuario INT IDENTITY(1,1) PRIMARY KEY,
+    nombre_completo VARCHAR(150) NOT NULL,
+    correo_electronico VARCHAR(100) NOT NULL UNIQUE, 
+    nombre_usuario VARCHAR(50) NOT NULL UNIQUE,      
+    contrasena VARCHAR(255) NOT NULL,                
+    rol VARCHAR(20) DEFAULT 'OPERADOR',              
+    fecha_creacion DATETIME DEFAULT GETDATE(),
+    ultimo_acceso DATETIME,
+    estado BIT DEFAULT 1                             
+);
+GO
+
+INSERT INTO usuarios (nombre_completo, correo_electronico, nombre_usuario, contrasena, rol)
+VALUES ('Administrador General', 'admin@agropacayales.com', 'admin', 'SqlPassword2026!', 'ADMIN');
+GO
+
+SELECT * FROM usuarios;
+GO
