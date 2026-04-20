@@ -11,7 +11,6 @@ WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
 
-
 # docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Admin12345" -p 1433:1433 --name sqlserver -d hugo454/sql-server:2022
 
 
@@ -34,8 +33,10 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 
 #COMANDOS PARA AXEL:
 
-# docker build -t "NombreDeUsuarioDocker"/springboot-sqlserver:1.0 .    
+# docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Admin12345" -p 1433:1433 --name sqlserver -d axelhuapaya/sql-server:2022
+    
+# docker build -t axelhuapaya/springboot-sqlserver:1.0 .    
 
-# docker run -d --name springboot-sqlserver -p 5001:5001 "NombreDeUsuarioDocker"/springboot-sqlserver:1.0
+# docker run -d --name springboot-sqlserver -p 5001:5001 axelhuapaya/springboot-sqlserver:1.0
 
-# docker push "NombreDeUsuarioDocker"/springboot-sqlserver:1.0
+# docker push axelhuapaya/springboot-sqlserver:1.0

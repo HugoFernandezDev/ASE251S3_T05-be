@@ -1,42 +1,87 @@
 package Agropacayales.valleGrande.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.Data;
 import java.time.LocalDateTime;
 
-@Data
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario")
-    private Integer idUsuario; // Sincronizado con INT de SQL
-
-    @Column(name = "nombre_completo", nullable = false, length = 150)
+    private Integer idUsuario;
     private String nombreCompleto;
-
-    @Column(name = "correo_electronico", nullable = false, unique = true, length = 100)
-    private String correo; 
-
-    @Column(name = "nombre_usuario", nullable = false, unique = true, length = 50)
-    private String username; 
-
-    @Column(name = "contrasena", nullable = false, length = 255)
-    private String password; 
-
-    @Column(length = 20)
+    private String correo;
+    private String username;
+    private String password;
     private String rol;
-
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Lima")
-    @Column(name = "fecha_creacion", updatable = false)
-    private LocalDateTime fechaRegistro; 
-
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Lima")
-    @Column(name = "ultimo_acceso")
-    private LocalDateTime ultimoAcceso;
-
+    private LocalDateTime fechaRegistro;
     private Boolean estado;
+
+    public Usuario() {
+    }
+
+    public Integer getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public String getNombreCompleto() {
+        return nombreCompleto;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
+    public LocalDateTime getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(LocalDateTime fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    public Boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
+    }
 }
