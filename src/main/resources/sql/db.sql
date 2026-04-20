@@ -21,23 +21,57 @@ CREATE TABLE producto (
 
 select * from producto;
 
-CREATE TABLE cultivos (
-    id_cultivo INT IDENTITY(1,1) PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    tipo_cultivo VARCHAR(80) NOT NULL,
-    frecuencia_riego_dias INT NOT NULL,
-    temperatura_ideal DECIMAL(5,2) NOT NULL,
-    fecha_siembra DATE,
-    requiere_sombra BIT DEFAULT 0,
-    observaciones VARCHAR(MAX),
-    estado BIT DEFAULT 1,
-    created_at DATETIME2,
-    updated_at DATETIME2,
-    deleted_at DATETIME2,
-    restored_at DATETIME2
-);
+-- Crear tabla cultivos con columnas de auditoría
+IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'cultivos')
+BEGIN
+    CREATE TABLE cultivos (
+        id_cultivo INT IDENTITY(1,1) PRIMARY KEY,
+        nombre VARCHAR(100) NOT NULL,
+        tipo_cultivo VARCHAR(80) NOT NULL,
+        frecuencia_riego_dias INT NOT NULL,
+        temperatura_ideal DECIMAL(5,2) NOT NULL,
+        fecha_siembra DATE,
+        requiere_sombra BIT DEFAULT 0,
+        observaciones VARCHAR(MAX),
+        estado BIT DEFAULT 1,
+        created_at DATETIME2,
+        updated_at DATETIME2,
+        deleted_at DATETIME2,
+        restored_at DATETIME2
+    );
+    PRINT 'Tabla cultivos creada exitosamente';
+END
+ELSE
+BEGIN
+    -- Si la tabla existe, agregar las columnas de auditoría si no existen
+    IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'cultivos' AND COLUMN_NAME = 'created_at')
+    BEGIN
+        ALTER TABLE cultivos ADD created_at DATETIME2 NULL;
+        PRINT 'Columna created_at agregada';
+    END
 
-select * from cultivos;
+    IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'cultivos' AND COLUMN_NAME = 'updated_at')
+    BEGIN
+        ALTER TABLE cultivos ADD updated_at DATETIME2 NULL;
+        PRINT 'Columna updated_at agregada';
+    END
+
+    IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'cultivos' AND COLUMN_NAME = 'deleted_at')
+    BEGIN
+        ALTER TABLE cultivos ADD deleted_at DATETIME2 NULL;
+        PRINT 'Columna deleted_at agregada';
+    END
+
+    IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'cultivos' AND COLUMN_NAME = 'restored_at')
+    BEGIN
+        ALTER TABLE cultivos ADD restored_at DATETIME2 NULL;
+        PRINT 'Columna restored_at agregada';
+    END
+END
+GO
+
+SELECT * FROM cultivos;
+GO
 
 CREATE TABLE usuarios (
     id_usuario INT IDENTITY(1,1) PRIMARY KEY,
