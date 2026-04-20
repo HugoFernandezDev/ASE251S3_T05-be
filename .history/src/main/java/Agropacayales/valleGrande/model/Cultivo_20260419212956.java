@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -45,15 +46,19 @@ public class Cultivo {
     private Boolean estado = true;
 
     // CAMPOS DE AUDITORÍA
+    @JsonIgnore
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @JsonIgnore
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @JsonIgnore
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
+    @JsonIgnore
     @Column(name = "restored_at")
     private LocalDateTime restoredAt;
 }
