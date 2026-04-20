@@ -1,10 +1,18 @@
 server:
-  port: ${PORT:5001}  # Valor por defecto si PORT no está configurado
-  url: ${SERVER_URL:http://localhost:5001}  # Valor por defecto si SERVER_URL no está configurado
+  port: ${PORT} # Valor por defecto si PORT no está configurado
+  url: ${SERVER_URL} # Valor por defecto si SERVER_URL no está configurado
 
 spring:
-  profiles:
-    default: local
+  datasource:
+    url: ${DATABASE_URL} ## Cambiar "model" por tu base de datos
+    username: ${DATABASE_USERNAME} ## Cambiar por tu usuario
+    password: ${DATABASE_PASSWORD} ## Cambiar por tu contraseña
+    driver-class-name: ${DATABASE_DRIVER}
+  jpa:
+    database-platform: org.hibernate.dialect.SQLServerDialect
+    hibernate:
+      ddl-auto: update # Puede ser 'create', 'update', 'validate' o 'none'
+    show-sql: false # Puede true o false, para ver las consultas SQL en consola
 
 springdoc:
   api-docs:
@@ -12,4 +20,4 @@ springdoc:
     path: /api-docs
   swagger-ui:
     enabled: true
-    path: /swagger-ui.html # Ruta para acceder a Swagger UI: http://localhost:8085/swagger-ui.html
+    path: /swagger-ui.html # Ruta para acceder a Swagger UI: http://localhost:5001/swagger-ui.html

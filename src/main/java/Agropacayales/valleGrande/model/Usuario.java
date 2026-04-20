@@ -1,5 +1,6 @@
 package Agropacayales.valleGrande.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -29,9 +30,11 @@ public class Usuario {
     @Column(length = 20)
     private String rol;
 
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Lima")
     @Column(name = "fecha_creacion", updatable = false)
     private LocalDateTime fechaRegistro; 
 
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Lima")
     @Column(name = "ultimo_acceso")
     private LocalDateTime ultimoAcceso;
 

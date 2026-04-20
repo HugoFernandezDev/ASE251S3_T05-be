@@ -12,7 +12,11 @@ CREATE TABLE producto (
     stock INT NOT NULL,
     unidad_medida VARCHAR(20),
     fecha_registro DATE,
-    estado BIT DEFAULT 1
+    estado BIT DEFAULT 1,
+    created_at DATETIME2,
+    updated_at DATETIME2,
+    deleted_at DATETIME2,
+    restored_at DATETIME2
 );
 
 select * from producto;
