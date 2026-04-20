@@ -1,5 +1,6 @@
 package Agropacayales.valleGrande.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "producto")
@@ -40,4 +42,20 @@ public class Producto {
 
     @Column(name = "estado")
     private Boolean estado = true;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Lima")
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Lima")
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Lima")
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Lima")
+    @Column(name = "restored_at")
+    private LocalDateTime restoredAt;
 }

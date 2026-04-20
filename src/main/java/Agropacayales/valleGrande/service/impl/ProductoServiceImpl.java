@@ -6,6 +6,7 @@ import Agropacayales.valleGrande.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,12 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public Producto crear(Producto producto) {
+        LocalDateTime now = LocalDateTime.now();
         producto.setEstado(true);
+        producto.setCreatedAt(now);
+        producto.setUpdatedAt(null);
+        producto.setDeletedAt(null);
+        producto.setRestoredAt(null);
         return productoRepository.save(producto);
     }
 
@@ -41,6 +47,7 @@ public class ProductoServiceImpl implements ProductoService {
         Optional<Producto> existente = productoRepository.findById(id);
         if (existente.isPresent()) {
             Producto productoActualizar = existente.get();
+            productoActualizar.setUpdatedAt(LocalDateTime.now());
             productoActualizar.setNombre(producto.getNombre());
             productoActualizar.setDescripcion(producto.getDescripcion());
             productoActualizar.setPrecio(producto.getPrecio());
@@ -58,6 +65,7 @@ public class ProductoServiceImpl implements ProductoService {
         if (existente.isPresent()) {
             Producto producto = existente.get();
             producto.setEstado(false);
+            producto.setDeletedAt(LocalDateTime.now());
             return productoRepository.save(producto);
         }
         return null;
@@ -69,6 +77,7 @@ public class ProductoServiceImpl implements ProductoService {
         if (existente.isPresent()) {
             Producto producto = existente.get();
             producto.setEstado(true);
+            producto.setRestoredAt(LocalDateTime.now());
             return productoRepository.save(producto);
         }
         return null;
