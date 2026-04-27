@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import Agropacayales.valleGrande.model.Usuario;
 import Agropacayales.valleGrande.service.IUsuarioService;
 
@@ -12,12 +11,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuarios")
-@CrossOrigin(origins = "*")
 @Tag(name = "Usuario-Controller", description = "Operaciones de gestión de usuarios")
 public class UsuarioController {
 
@@ -38,14 +35,19 @@ public class UsuarioController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // GET - Listar usuarios por estado
+    @GetMapping("/estado/{estado}")
+    @Operation(summary = "Listar por estado", description = "Filtra usuarios activos o inactivos")
+    public ResponseEntity<List<Usuario>> listarPorEstado(@PathVariable Boolean estado) {
+        return ResponseEntity.ok(service.listarPorEstado(estado));
+    }
+
     @PostMapping
     @Operation(summary = "Registrar usuario", description = "Crea un nuevo usuario en el sistema")
     @ApiResponse(responseCode = "201", description = "Usuario creado exitosamente")
     public ResponseEntity<Usuario> registrar(@RequestBody Usuario usuario) {
         Usuario nuevo = service.guardar(usuario);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(nuevo.getIdUsuario()).toUri();
-        return ResponseEntity.created(location).body(nuevo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
     }
 
     @PutMapping("/{id}")
@@ -54,17 +56,25 @@ public class UsuarioController {
         return ResponseEntity.ok(service.actualizar(id, usuario));
     }
 
-    @PatchMapping("/eliminar/{id}")
+    // Patrón de URL consistente: /{id}/eliminar (igual que Producto y Parcela)
+    @PatchMapping("/{id}/eliminar")
     @Operation(summary = "Eliminar (Lógico)", description = "Desactiva al usuario cambiando su estado a false")
-    public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
-        service.eliminarLogico(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    public ResponseEntity<Usuario> eliminar(@PathVariable Integer id) {
+        Usuario eliminado = service.eliminarLogico(id);
+        if (eliminado != null) {
+            return ResponseEntity.ok(eliminado);
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    @PatchMapping("/restaurar/{id}")
+    // Patrón de URL consistente: /{id}/restaurar (igual que Producto y Parcela)
+    @PatchMapping("/{id}/restaurar")
     @Operation(summary = "Restaurar", description = "Activa nuevamente al usuario cambiando su estado a true")
-    public ResponseEntity<Void> restaurar(@PathVariable Integer id) {
-        service.restaurarLogico(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    public ResponseEntity<Usuario> restaurar(@PathVariable Integer id) {
+        Usuario restaurado = service.restaurarLogico(id);
+        if (restaurado != null) {
+            return ResponseEntity.ok(restaurado);
+        }
+        return ResponseEntity.notFound().build();
     }
 }

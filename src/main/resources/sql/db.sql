@@ -4,6 +4,7 @@ GO
 USE agro_pacayales;
 GO
 
+-- Tabla de productos agrícolas (US4: Inventario de abonos y químicos)
 CREATE TABLE producto (
     id_producto INT IDENTITY(1,1) PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -18,10 +19,24 @@ CREATE TABLE producto (
     deleted_at DATETIME2,
     restored_at DATETIME2
 );
+GO
 
-select * from producto;
+-- Tabla de parcelas / terrenos de cultivo (US1: Registro de terrenos)
+CREATE TABLE parcelas (
+    id_parcela INT IDENTITY(1,1) PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL UNIQUE,
+    ubicacion VARCHAR(200),
+    area FLOAT,
+    tipo_cultivo VARCHAR(80),
+    estado BIT DEFAULT 1,
+    created_at DATETIME2,
+    updated_at DATETIME2,
+    deleted_at DATETIME2,
+    restored_at DATETIME2
+);
+GO
 
--- Crear tabla cultivos con columnas de auditoría
+-- Tabla de cultivos (US5: Registro de siembra)
 IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'cultivos')
 BEGIN
     CREATE TABLE cultivos (
@@ -39,56 +54,23 @@ BEGIN
         deleted_at DATETIME2,
         restored_at DATETIME2
     );
-    PRINT 'Tabla cultivos creada exitosamente';
-END
-ELSE
-BEGIN
-    -- Si la tabla existe, agregar las columnas de auditoría si no existen
-    IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'cultivos' AND COLUMN_NAME = 'created_at')
-    BEGIN
-        ALTER TABLE cultivos ADD created_at DATETIME2 NULL;
-        PRINT 'Columna created_at agregada';
-    END
-
-    IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'cultivos' AND COLUMN_NAME = 'updated_at')
-    BEGIN
-        ALTER TABLE cultivos ADD updated_at DATETIME2 NULL;
-        PRINT 'Columna updated_at agregada';
-    END
-
-    IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'cultivos' AND COLUMN_NAME = 'deleted_at')
-    BEGIN
-        ALTER TABLE cultivos ADD deleted_at DATETIME2 NULL;
-        PRINT 'Columna deleted_at agregada';
-    END
-
-    IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'cultivos' AND COLUMN_NAME = 'restored_at')
-    BEGIN
-        ALTER TABLE cultivos ADD restored_at DATETIME2 NULL;
-        PRINT 'Columna restored_at agregada';
-    END
 END
 GO
 
-SELECT * FROM cultivos;
-GO
-
+-- Tabla de usuarios (US2: Registro de trabajadores)
 CREATE TABLE usuarios (
     id_usuario INT IDENTITY(1,1) PRIMARY KEY,
     nombre_completo VARCHAR(150) NOT NULL,
-    correo_electronico VARCHAR(100) NOT NULL UNIQUE, 
-    nombre_usuario VARCHAR(50) NOT NULL UNIQUE,      
-    contrasena VARCHAR(255) NOT NULL,                
-    rol VARCHAR(20) DEFAULT 'OPERADOR',              
-    fecha_creacion DATETIME DEFAULT GETDATE(),
-    ultimo_acceso DATETIME,
-    estado BIT DEFAULT 1                             
+    correo VARCHAR(100) NOT NULL UNIQUE,
+    username VARCHAR(50),
+    password VARCHAR(255),
+    rol VARCHAR(20) DEFAULT 'OPERADOR',
+    fecha_registro DATETIME DEFAULT GETDATE(),
+    estado BIT DEFAULT 1
 );
 GO
 
-INSERT INTO usuarios (nombre_completo, correo_electronico, nombre_usuario, contrasena, rol)
+-- Insertar usuario administrador por defecto
+INSERT INTO usuarios (nombre_completo, correo, username, password, rol)
 VALUES ('Administrador General', 'admin@agropacayales.com', 'admin', 'SqlPassword2026!', 'ADMIN');
-GO
-
-SELECT * FROM usuarios;
 GO

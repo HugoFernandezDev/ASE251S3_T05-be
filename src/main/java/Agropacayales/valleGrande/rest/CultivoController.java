@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/cultivos")
-@CrossOrigin(origins = "*")
 public class CultivoController {
 
     @Autowired
