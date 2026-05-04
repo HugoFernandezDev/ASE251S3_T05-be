@@ -1,0 +1,28 @@
+services:
+  backend:
+    image: maven:3.9.9-eclipse-temurin-21
+    container_name: agro-backend
+    working_dir: /app
+    command: mvn spring-boot:run
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      PORT: "5001"
+      SPRING_DATASOURCE_URL: "jdbc:sqlserver://sqlserver:1433;databaseName=agro_pacayales;encrypt=true;trustServerCertificate=true"
+      SPRING_DATASOURCE_USERNAME: "sa"
+      SPRING_DATASOURCE_PASSWORD: "SqlPassword2026!"
+    volumes:
+      - ..:/app
+      - maven_cache:/root/.m2
+    ports:
+      - "5001:5001"
+    networks:
+      - agro_compose_network
+
+volumes:
+  maven_cache:
+
+networks:
+  agro_compose_network:
+    external: true
+    name: agro_compose_network

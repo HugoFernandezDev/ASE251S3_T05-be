@@ -1,0 +1,44 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: agro-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      SA_PASSWORD: "SqlPassword2026!"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+      - ../src/main/resources/sql/db.sql:/init/db.sql:ro
+    command: >
+      /bin/bash -c "
+      /opt/mssql/bin/sqlservr &
+      pid=$$!;
+      echo 'Esperando SQL Server...';
+      until /opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$SA_PASSWORD\" -Q \"SELECT 1\" > /dev/null 2>&1;
+      do
+        sleep 2;
+      done;
+      if [ ! -f /var/opt/mssql/.db_initialized ]; then
+        echo 'Inicializando base de datos con db.sql...';
+        /opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$SA_PASSWORD\" -i /init/db.sql;
+        touch /var/opt/mssql/.db_initialized;
+      fi;
+      wait $$pid
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$SA_PASSWORD\" -Q \"SELECT 1\" || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - agro_compose_network
+
+volumes:
+  sqlserver_data:
+
+networks:
+  agro_compose_network:
+    name: agro_compose_network
