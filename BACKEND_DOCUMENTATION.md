@@ -1,5 +1,4 @@
-<<<<<<< HEAD
- # 📚 DOCUMENTACIÓN DEL BACKEND - AGROPACAYALES
+# 📚 DOCUMENTACIÓN DEL BACKEND - AGROPACAYALES
 
 **Versión:** 1.0
 **Fecha:** Mayo 2026
@@ -516,7 +515,3 @@ fetch('http://localhost:5001/api/parcelas', {
 2. Verificar BD: `docker logs sql-server`
 3. Revisar Swagger documentation
 4. Contactar al equipo backend
-=======
-# ASE251S3_T05-be 
----
->>>>>>> f0e2af4 (initial commit)
