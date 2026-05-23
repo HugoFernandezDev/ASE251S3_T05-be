@@ -33,7 +33,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
     @Override
     public Usuario guardar(Usuario usuario) {
-        usuario.setFechaRegistro(LocalDateTime.now());
+        usuario.setCreatedAt(LocalDateTime.now());
         usuario.setEstado(true);
         return repository.save(usuario);
     }
@@ -41,11 +41,13 @@ public class UsuarioServiceImpl implements IUsuarioService {
     @Override
     public Usuario actualizar(Integer id, Usuario datos) {
         return repository.findById(id).map(u -> {
-            u.setNombreCompleto(datos.getNombreCompleto());
-            u.setUsername(datos.getUsername());
-            u.setPassword(datos.getPassword());
+            u.setNombre(datos.getNombre());
+            u.setApellido(datos.getApellido());
             u.setCorreo(datos.getCorreo());
+            u.setPassword(datos.getPassword());
             u.setRol(datos.getRol());
+            u.setFechaContratacion(datos.getFechaContratacion());
+            u.setUpdatedAt(LocalDateTime.now());
             return repository.save(u);
         }).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
@@ -54,6 +56,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
     public Usuario eliminarLogico(Integer id) {
         return repository.findById(id).map(u -> {
             u.setEstado(false);
+            u.setDeletedAt(LocalDateTime.now());
             return repository.save(u);
         }).orElse(null);
     }
@@ -62,6 +65,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
     public Usuario restaurarLogico(Integer id) {
         return repository.findById(id).map(u -> {
             u.setEstado(true);
+            u.setRestoredAt(LocalDateTime.now());
             return repository.save(u);
         }).orElse(null);
     }

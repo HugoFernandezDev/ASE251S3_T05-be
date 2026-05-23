@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -13,11 +14,16 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Cultivo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_cultivo")
     private Long idCultivo;
+
+    @ManyToOne
+    @JoinColumn(name = "id_parcela", nullable = false)
+    private Parcela parcela;
 
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
@@ -45,15 +51,19 @@ public class Cultivo {
     private Boolean estado = true;
 
     // CAMPOS DE AUDITORÍA
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Lima")
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Lima")
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Lima")
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Lima")
     @Column(name = "restored_at")
     private LocalDateTime restoredAt;
 }

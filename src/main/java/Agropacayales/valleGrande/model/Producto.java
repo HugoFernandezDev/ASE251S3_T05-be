@@ -1,6 +1,7 @@
 package Agropacayales.valleGrande.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Producto {
 
     @Id
@@ -37,8 +39,14 @@ public class Producto {
     @Column(name = "unidad_medida", length = 20)
     private String unidadMedida;
 
-    @Column(name = "fecha_registro")
-    private LocalDate fechaRegistro;
+    @Column(name = "tipo_producto", length = 50)
+    private String tipoProducto;
+
+    @Column(name = "proveedor", length = 100)
+    private String proveedor;
+
+    @Column(name = "presentacion", length = 100)
+    private String presentacion;
 
     @Column(name = "estado")
     private Boolean estado = true;

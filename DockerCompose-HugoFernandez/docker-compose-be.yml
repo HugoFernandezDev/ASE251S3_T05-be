@@ -4,27 +4,22 @@ version: '3'
 
 services:
   backend:
-    image: hugo454/springboot-sqlserver:1.0   # cambiar por tu usuario de dockerhub
+    image: hugo454/springboot-sqlserver:1.0
     container_name: springboot-sqlserver
     ports:
       - "5001:5001"
     environment:
       - PORT=5001
-      - SERVER_URL=http://localhost:5001
       - DATABASE_URL=jdbc:sqlserver://sql-server:1433;databaseName=agro_pacayales;encrypt=true;trustServerCertificate=true
       - DATABASE_USERNAME=sa
       - DATABASE_PASSWORD=Hadrianf1234
       - DATABASE_DRIVER=com.microsoft.sqlserver.jdbc.SQLServerDriver
+      - JPA_DDL_AUTO=update
+      - JPA_SHOW_SQL=false
     networks:
       - my-network
 
-# CONSUMIR UNA RED EXISTENTE CREADA POR OTRO COMPOSE
 networks:
   my-network:
-    external: true   # usa la red creada por el compose de la base de datos
+    external: true
 
-# CREAR UNA RED EN ESTE COMPOSE PARA QUE SEA COMPARTIDA
-#networks:
-#  my-network:
-#    name: my-network   # red compartida, visible desde ambos compose
-#    driver: bridge

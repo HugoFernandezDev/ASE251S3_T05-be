@@ -35,12 +35,16 @@ public class CultivoServiceImpl implements CultivoService {
     public Cultivo crear(Cultivo cultivo) { 
         cultivo.setEstado(true);
         cultivo.setCreatedAt(LocalDateTime.now());
+        cultivo.setUpdatedAt(null);
+        cultivo.setDeletedAt(null);
+        cultivo.setRestoredAt(null);
         return repository.save(cultivo);
     }
 
     @Override
     public Cultivo editar(Long id, Cultivo datos) { 
         return repository.findById(id).map(c -> {
+            c.setParcela(datos.getParcela());
             c.setNombre(datos.getNombre());
             c.setTipoCultivo(datos.getTipoCultivo());
             c.setFrecuenciaRiegoDias(datos.getFrecuenciaRiegoDias());

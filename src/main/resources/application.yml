@@ -1,13 +1,12 @@
 server:
-  port: ${PORT:8080}
-  url: ${SERVER_URL:http://localhost:8080}
+  port: ${PORT:5001}
 
 spring:
   datasource:
-    url: ${DATABASE_URL:jdbc:sqlserver://localhost:1433;databaseName=agro_pacayales;encrypt=true;trustServerCertificate=true}
-    username: ${DATABASE_USERNAME:sa}
-    password: ${DATABASE_PASSWORD:defaultPassword123}
-    driver-class-name: ${DATABASE_DRIVER:com.microsoft.sqlserver.jdbc.SQLServerDriver}
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: ${DATABASE_DRIVER}
   jpa:
     database-platform: org.hibernate.dialect.SQLServerDialect
     hibernate:
@@ -21,3 +20,4 @@ springdoc:
   swagger-ui:
     enabled: true
     path: /swagger-ui.html
+

@@ -1,11 +1,13 @@
 package Agropacayales.valleGrande.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,6 +15,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Usuario {
 
     @Id
@@ -20,14 +23,14 @@ public class Usuario {
     @Column(name = "id_usuario")
     private Integer idUsuario;
 
-    @Column(name = "nombre_completo", nullable = false, length = 150)
-    private String nombreCompleto;
+    @Column(name = "nombre", nullable = false, length = 100)
+    private String nombre;
 
-    @Column(name = "correo", nullable = false, length = 100)
+    @Column(name = "apellido", nullable = false, length = 100)
+    private String apellido;
+
+    @Column(name = "correo", nullable = false, length = 100, unique = true)
     private String correo;
-
-    @Column(name = "username", length = 50)
-    private String username;
 
     @Column(name = "password", length = 255)
     private String password;
@@ -35,10 +38,27 @@ public class Usuario {
     @Column(name = "rol", length = 20)
     private String rol;
 
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Lima")
-    @Column(name = "fecha_registro")
-    private LocalDateTime fechaRegistro;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "fecha_contratacion")
+    private LocalDate fechaContratacion;
 
     @Column(name = "estado")
-    private Boolean estado;
+    private Boolean estado = true;
+
+    // CAMPOS DE AUDITORÍA
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Lima")
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Lima")
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Lima")
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Lima")
+    @Column(name = "restored_at")
+    private LocalDateTime restoredAt;
 }

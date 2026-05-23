@@ -12,7 +12,9 @@ CREATE TABLE producto (
     precio DECIMAL(10,2) NOT NULL,
     stock INT NOT NULL,
     unidad_medida VARCHAR(20),
-    fecha_registro DATE,
+    tipo_producto VARCHAR(50),
+    proveedor VARCHAR(100),
+    presentacion VARCHAR(100),
     estado BIT DEFAULT 1,
     created_at DATETIME2,
     updated_at DATETIME2,
@@ -26,8 +28,15 @@ CREATE TABLE parcelas (
     id_parcela INT IDENTITY(1,1) PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL UNIQUE,
     ubicacion VARCHAR(200),
-    area FLOAT,
-    tipo_cultivo VARCHAR(80),
+    area_hectareas DECIMAL(10,2),
+    tipo_suelo VARCHAR(80),
+    responsable VARCHAR(100),
+    estado_riego VARCHAR(50),
+    fecha_ultima_siembra DATE,
+    produccion_estimada VARCHAR(100),
+    cultivo_actual VARCHAR(100),
+    observaciones VARCHAR(MAX),
+    en_uso BIT DEFAULT 0,
     estado BIT DEFAULT 1,
     created_at DATETIME2,
     updated_at DATETIME2,
@@ -41,6 +50,7 @@ IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'culti
 BEGIN
     CREATE TABLE cultivos (
         id_cultivo INT IDENTITY(1,1) PRIMARY KEY,
+        id_parcela INT NOT NULL,
         nombre VARCHAR(100) NOT NULL,
         tipo_cultivo VARCHAR(80) NOT NULL,
         frecuencia_riego_dias INT NOT NULL,
@@ -52,7 +62,10 @@ BEGIN
         created_at DATETIME2,
         updated_at DATETIME2,
         deleted_at DATETIME2,
-        restored_at DATETIME2
+        restored_at DATETIME2,
+        CONSTRAINT FK_cultivos_parcelas FOREIGN KEY (id_parcela) 
+            REFERENCES parcelas(id_parcela) 
+            ON DELETE NO ACTION -- Cambio aquí de RESTRICT a NO ACTION
     );
 END
 GO
@@ -60,17 +73,21 @@ GO
 -- Tabla de usuarios (US2: Registro de trabajadores)
 CREATE TABLE usuarios (
     id_usuario INT IDENTITY(1,1) PRIMARY KEY,
-    nombre_completo VARCHAR(150) NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
     correo VARCHAR(100) NOT NULL UNIQUE,
-    username VARCHAR(50),
     password VARCHAR(255),
     rol VARCHAR(20) DEFAULT 'OPERADOR',
-    fecha_registro DATETIME DEFAULT GETDATE(),
-    estado BIT DEFAULT 1
+    fecha_contratacion DATE,
+    estado BIT DEFAULT 1,
+    created_at DATETIME2,
+    updated_at DATETIME2,
+    deleted_at DATETIME2,
+    restored_at DATETIME2
 );
 GO
 
 -- Insertar usuario administrador por defecto
-INSERT INTO usuarios (nombre_completo, correo, username, password, rol)
-VALUES ('Administrador General', 'admin@agropacayales.com', 'admin', 'SqlPassword2026!', 'ADMIN');
+INSERT INTO usuarios (nombre, apellido, correo, password, rol, estado)
+VALUES ('Administrador', 'General', 'admin@agropacayales.com', 'SqlPassword2026!', 'ADMIN', 1);
 GO
