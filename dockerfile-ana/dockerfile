@@ -10,7 +10,7 @@ RUN mvn clean package -DskipTests
 # Stage 2: Run with Java
 # FROM eclipse-temurin:25-jre-alpine  # Imágen no oficial (ligero)
 # FROM openjdk:12-ea-25-jdk-oracle    # Imágen oficial (pesado)
-FROM hugo454/eclipse-temurin:25-jre-alpine
+FROM anafelixmendoza21/eclipse-temurin:25-jre-alpine
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
