@@ -1,7 +1,7 @@
 # Stage 1: Build with Maven
 # FROM maven:3.9-amazoncorretto-25-alpine AS builder   # Imágen no oficial (ligero)
 # FROM maven:eclipse-temurin AS builder                # Imágen oficial (pesado)
-FROM hugo454/maven:3.9-amazoncorretto-25-alpine AS builder
+FROM anafelixmendoza21/maven:3.9-amazoncorretto-25-alpine AS builder
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
