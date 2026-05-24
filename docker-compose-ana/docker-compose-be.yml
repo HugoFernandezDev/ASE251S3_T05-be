@@ -1,28 +1,25 @@
+# docker-compose -f docker-compose-be.yml up -d
+# docker-compose -f docker-compose-be.yml down
+version: '3'
+
 services:
   backend:
-    image: maven:3.9.9-eclipse-temurin-21
-    container_name: agro-backend
-    working_dir: /app
-    command: mvn spring-boot:run
-    restart: unless-stopped
-    environment:
-      SPRING_PROFILES_ACTIVE: local
-      PORT: "5001"
-      SPRING_DATASOURCE_URL: "jdbc:sqlserver://sqlserver:1433;databaseName=agro_pacayales;encrypt=true;trustServerCertificate=true"
-      SPRING_DATASOURCE_USERNAME: "sa"
-      SPRING_DATASOURCE_PASSWORD: "SqlPassword2026!"
-    volumes:
-      - ..:/app
-      - maven_cache:/root/.m2
+    image: anafelixmendoza21/springboot-sqlserver:1.0
+    container_name: springboot-sqlserver
     ports:
       - "5001:5001"
+    environment:
+      - PORT=5001
+      - DATABASE_URL=jdbc:sqlserver://sql-server:1433;databaseName=agro_pacayales;encrypt=true;trustServerCertificate=true
+      - DATABASE_USERNAME=sa
+      - DATABASE_PASSWORD=anafelix
+      - DATABASE_DRIVER=com.microsoft.sqlserver.jdbc.SQLServerDriver
+      - JPA_DDL_AUTO=update
+      - JPA_SHOW_SQL=false
     networks:
-      - agro_compose_network
-
-volumes:
-  maven_cache:
+      - my-network
 
 networks:
-  agro_compose_network:
+  my-network:
     external: true
-    name: agro_compose_network
+
