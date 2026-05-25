@@ -220,6 +220,55 @@
 
 ---
 
+## ACTIVIDADES-CULTIVOS - POST /api/actividades-cultivos
+
+**IMPORTANTE:** Primero crea los cultivos y productos y obtén sus IDs. Luego reemplaza `idCultivo` e `idProducto`.
+
+### Actividad 1 - Fertilización con dos insumos
+```json
+{
+  "idCultivo": 1,
+  "tipoActividad": "Fertilización",
+  "descripcion": "Aplicación de NPK y fungicida preventivo",
+  "detalles": [
+    {
+      "idProducto": 1,
+      "cantidad": 2
+    },
+    {
+      "idProducto": 4,
+      "cantidad": 1
+    }
+  ]
+}
+```
+
+### Actividad 2 - Control de plagas con un insumo
+```json
+{
+  "idCultivo": 2,
+  "tipoActividad": "Control de plagas",
+  "descripcion": "Aplicación de insecticida orgánico",
+  "detalles": [
+    {
+      "idProducto": 2,
+      "cantidad": 3
+    }
+  ]
+}
+```
+
+### Actividad 3 - Inspección sin insumos
+```json
+{
+  "idCultivo": 3,
+  "tipoActividad": "Inspección",
+  "descripcion": "Revisión visual de estado del cultivo"
+}
+```
+
+---
+
 ## EDITAR - PUT /api/{recurso}/{id}
 
 ### Editar Usuario
