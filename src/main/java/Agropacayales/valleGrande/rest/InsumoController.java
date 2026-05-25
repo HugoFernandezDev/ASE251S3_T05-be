@@ -2,6 +2,7 @@ package Agropacayales.valleGrande.rest;
 
 import Agropacayales.valleGrande.model.Insumo;
 import Agropacayales.valleGrande.service.InsumoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,14 +42,14 @@ public class InsumoController {
 
     // POST - Crear nuevo insumo
     @PostMapping
-    public ResponseEntity<Insumo> crear(@RequestBody Insumo insumo) {
+    public ResponseEntity<Insumo> crear(@Valid @RequestBody Insumo insumo) {
         Insumo nuevoInsumo = insumoService.crear(insumo);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoInsumo);
     }
 
     // PUT - Editar insumo existente
     @PutMapping("/{id}")
-    public ResponseEntity<Insumo> editar(@PathVariable Long id, @RequestBody Insumo insumo) {
+    public ResponseEntity<Insumo> editar(@PathVariable Long id, @Valid @RequestBody Insumo insumo) {
         Insumo insumoEditado = insumoService.editar(id, insumo);
         if (insumoEditado != null) {
             return ResponseEntity.ok(insumoEditado);
