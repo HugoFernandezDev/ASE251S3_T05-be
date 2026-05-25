@@ -7,10 +7,10 @@ import Agropacayales.valleGrande.dto.response.DetalleActividadResponseDto;
 import Agropacayales.valleGrande.model.ActividadCultivo;
 import Agropacayales.valleGrande.model.Cultivo;
 import Agropacayales.valleGrande.model.DetalleActividad;
-import Agropacayales.valleGrande.model.Producto;
+import Agropacayales.valleGrande.model.Insumo;
 import Agropacayales.valleGrande.repository.ActividadCultivoRepository;
 import Agropacayales.valleGrande.repository.CultivoRepository;
-import Agropacayales.valleGrande.repository.ProductoRepository;
+import Agropacayales.valleGrande.repository.InsumoRepository;
 import Agropacayales.valleGrande.service.IActividadCultivoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class ActividadCultivoServiceImpl implements IActividadCultivoService {
     private CultivoRepository cultivoRepository;
 
     @Autowired
-    private ProductoRepository productoRepository;
+    private InsumoRepository insumoRepository;
 
     @Override
     @Transactional
@@ -60,33 +60,33 @@ public class ActividadCultivoServiceImpl implements IActividadCultivoService {
         // 3. Procesar detalles (si existen)
         if (request.getDetalles() != null && !request.getDetalles().isEmpty()) {
             for (DetalleActividadRequestDto detDto : request.getDetalles()) {
-                // Validar Producto
-                Producto producto = productoRepository.findById(detDto.getIdProducto())
-                        .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + detDto.getIdProducto()));
+                // Validar Insumo
+                Insumo insumo = insumoRepository.findById(detDto.getIdInsumo())
+                        .orElseThrow(() -> new RuntimeException("Insumo no encontrado con ID: " + detDto.getIdInsumo()));
 
-                if (!Boolean.TRUE.equals(producto.getEstado())) {
-                    throw new RuntimeException("El producto '" + producto.getNombre() + "' está inactivo.");
+                if (!Boolean.TRUE.equals(insumo.getEstado())) {
+                    throw new RuntimeException("El insumo '" + insumo.getNombre() + "' está inactivo.");
                 }
 
                 // Validar Stock
-                if (producto.getStock() < detDto.getCantidad()) {
-                    throw new RuntimeException("Stock insuficiente para el producto '" + producto.getNombre() + 
-                            "'. Stock disponible: " + producto.getStock() + ", solicitado: " + detDto.getCantidad());
+                if (insumo.getStock() < detDto.getCantidad()) {
+                    throw new RuntimeException("Stock insuficiente para el insumo '" + insumo.getNombre() + 
+                            "'. Stock disponible: " + insumo.getStock() + ", solicitado: " + detDto.getCantidad());
                 }
 
                 // Restar Stock
-                producto.setStock(producto.getStock() - detDto.getCantidad());
-                productoRepository.save(producto);
+                insumo.setStock(insumo.getStock() - detDto.getCantidad());
+                insumoRepository.save(insumo);
 
                 // Calcular costos
-                BigDecimal precioUnitario = producto.getPrecio();
+                BigDecimal precioUnitario = insumo.getPrecio();
                 BigDecimal subtotal = precioUnitario.multiply(BigDecimal.valueOf(detDto.getCantidad()));
                 costoTotal = costoTotal.add(subtotal);
 
                 // Crear Detalle de Actividad
                 DetalleActividad detalle = new DetalleActividad();
                 detalle.setActividadCultivo(actividad);
-                detalle.setProducto(producto);
+                detalle.setInsumo(insumo);
                 detalle.setCantidad(detDto.getCantidad());
                 detalle.setPrecioUnitario(precioUnitario);
                 detalle.setSubtotal(subtotal);
@@ -167,8 +167,8 @@ public class ActividadCultivoServiceImpl implements IActividadCultivoService {
             for (DetalleActividad det : entity.getDetalles()) {
                 DetalleActividadResponseDto dDto = new DetalleActividadResponseDto();
                 dDto.setIdDetalle(det.getIdDetalle());
-                dDto.setIdProducto(det.getProducto().getIdProducto());
-                dDto.setNombreProducto(det.getProducto().getNombre());
+                dDto.setIdInsumo(det.getInsumo().getIdInsumo());
+                dDto.setNombreInsumo(det.getInsumo().getNombre());
                 dDto.setCantidad(det.getCantidad());
                 dDto.setPrecioUnitario(det.getPrecioUnitario());
                 dDto.setSubtotal(det.getSubtotal());

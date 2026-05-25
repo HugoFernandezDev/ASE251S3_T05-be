@@ -25,7 +25,7 @@ http://localhost:5001/swagger-ui.html
 |---------|-----|------|-----|-------|
 | `/usuarios` | Listar | Crear | Editar | Eliminar/Restaurar |
 | `/parcelas` | Listar | Crear | Editar | Eliminar/Restaurar |
-| `/productos` | Listar | Crear | Editar | Eliminar/Restaurar |
+| `/insumos` | Listar | Crear | Editar | Eliminar/Restaurar |
 | `/cultivos` | Listar | Crear | Editar | Eliminar/Restaurar |
 
 ### URLs Detalladas
@@ -52,15 +52,15 @@ PATCH  /api/parcelas/{id}/eliminar     # Eliminar
 PATCH  /api/parcelas/{id}/restaurar    # Restaurar
 ```
 
-#### PRODUCTOS
+#### INSUMOS
 ```
-GET    /api/productos                   # Listar todos
-GET    /api/productos/{id}             # Obtener por ID
-GET    /api/productos/estado/{estado}  # Filtrar por estado
-POST   /api/productos                   # Crear nuevo
-PUT    /api/productos/{id}             # Editar
-PATCH  /api/productos/{id}/eliminar    # Eliminar
-PATCH  /api/productos/{id}/restaurar   # Restaurar
+GET    /api/insumos                   # Listar todos
+GET    /api/insumos/{id}             # Obtener por ID
+GET    /api/insumos/estado/{estado}  # Filtrar por estado
+POST   /api/insumos                   # Crear nuevo
+PUT    /api/insumos/{id}             # Editar
+PATCH  /api/insumos/{id}/eliminar    # Eliminar
+PATCH  /api/insumos/{id}/restaurar   # Restaurar
 ```
 
 #### CULTIVOS
@@ -198,16 +198,16 @@ Si necesitan agregar autenticación JWT:
 }
 ```
 
-### PRODUCTO
+### INSUMO
 ```json
 {
-  "idProducto": 1,                 // Long, auto-increment
+  "idInsumo": 1,                   // Long, auto-increment
   "nombre": "Fertilizante NPK",    // String, required
   "descripcion": "Fertilizante...", // String (TEXT)
   "precio": 45.50,                 // BigDecimal (precision 10, scale 2)
   "stock": 100,                    // Integer, required
   "unidadMedida": "kg",            // String
-  "tipoProducto": "FERTILIZANTE",  // String: FERTILIZANTE, PESTICIDA, HERBICIDA, FUNGICIDA, SEMILLA, OTRO
+  "tipoInsumo": "FERTILIZANTE",    // String: FERTILIZANTE, PESTICIDA, HERBICIDA, FUNGICIDA, SEMILLA, OTRO
   "proveedor": "Agroquímicos...",  // String
   "presentacion": "Bolsa 50kg",    // String
   "estado": true,                  // Boolean, default true
@@ -265,7 +265,7 @@ Parcela ← Cultivo (1 a Many)
 Usuario ← Parcela (sin relación BD)
   └─ Se relacionan por el campo "responsable" (String)
 
-Producto (sin relaciones)
+Insumo (sin relaciones)
   └─ Entidad independiente
 ```
 

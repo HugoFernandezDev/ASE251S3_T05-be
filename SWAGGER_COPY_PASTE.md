@@ -92,9 +92,9 @@
 
 ---
 
-## PRODUCTOS - POST /api/productos
+## INSUMOS - POST /api/insumos
 
-### Producto 1 - Fertilizante
+### Insumo 1 - Fertilizante
 ```json
 {
   "nombre": "Fertilizante NPK 20-10-10",
@@ -102,13 +102,13 @@
   "precio": 45.50,
   "stock": 100,
   "unidadMedida": "kg",
-  "tipoProducto": "FERTILIZANTE",
+  "tipoInsumo": "FERTILIZANTE",
   "proveedor": "Agroquímicos del Valle",
   "presentacion": "Bolsa 50kg"
 }
 ```
 
-### Producto 2 - Pesticida
+### Insumo 2 - Pesticida
 ```json
 {
   "nombre": "Pesticida Insecticida Organico",
@@ -116,13 +116,13 @@
   "precio": 65.00,
   "stock": 50,
   "unidadMedida": "L",
-  "tipoProducto": "PESTICIDA",
+  "tipoInsumo": "PESTICIDA",
   "proveedor": "BioAgro Solutions",
   "presentacion": "Bidón 20L"
 }
 ```
 
-### Producto 3 - Herbicida
+### Insumo 3 - Herbicida
 ```json
 {
   "nombre": "Herbicida Selectivo",
@@ -130,13 +130,13 @@
   "precio": 85.75,
   "stock": 30,
   "unidadMedida": "L",
-  "tipoProducto": "HERBICIDA",
+  "tipoInsumo": "HERBICIDA",
   "proveedor": "ChemiCrop",
   "presentacion": "Frasco 500ml"
 }
 ```
 
-### Producto 4 - Fungicida
+### Insumo 4 - Fungicida
 ```json
 {
   "nombre": "Fungicida Preventivo",
@@ -144,13 +144,13 @@
   "precio": 120.00,
   "stock": 25,
   "unidadMedida": "kg",
-  "tipoProducto": "FUNGICIDA",
+  "tipoInsumo": "FUNGICIDA",
   "proveedor": "FitoProtección",
   "presentacion": "Bolsa 25kg"
 }
 ```
 
-### Producto 5 - Semilla
+### Insumo 5 - Semilla
 ```json
 {
   "nombre": "Semilla Maíz Híbrido",
@@ -158,7 +158,7 @@
   "precio": 250.00,
   "stock": 10,
   "unidadMedida": "bolsa",
-  "tipoProducto": "SEMILLA",
+  "tipoInsumo": "SEMILLA",
   "proveedor": "SemillasElite",
   "presentacion": "Bolsa 25kg"
 }
@@ -222,7 +222,7 @@
 
 ## ACTIVIDADES-CULTIVOS - POST /api/actividades-cultivos
 
-**IMPORTANTE:** Primero crea los cultivos y productos y obtén sus IDs. Luego reemplaza `idCultivo` e `idProducto`.
+**IMPORTANTE:** Primero crea los cultivos e insumos y obtén sus IDs. Luego reemplaza `idCultivo` e `idInsumo`.
 
 ### Actividad 1 - Fertilización con dos insumos
 ```json
@@ -232,11 +232,11 @@
   "descripcion": "Aplicación de NPK y fungicida preventivo",
   "detalles": [
     {
-      "idProducto": 1,
+      "idInsumo": 1,
       "cantidad": 2
     },
     {
-      "idProducto": 4,
+      "idInsumo": 4,
       "cantidad": 1
     }
   ]
@@ -251,7 +251,7 @@
   "descripcion": "Aplicación de insecticida orgánico",
   "detalles": [
     {
-      "idProducto": 2,
+      "idInsumo": 2,
       "cantidad": 3
     }
   ]
@@ -299,7 +299,7 @@
 }
 ```
 
-### Editar Producto
+### Editar Insumo
 ```json
 {
   "nombre": "Fertilizante NPK 20-10-10",
@@ -307,7 +307,7 @@
   "precio": 49.99,
   "stock": 150,
   "unidadMedida": "kg",
-  "tipoProducto": "FERTILIZANTE",
+  "tipoInsumo": "FERTILIZANTE",
   "proveedor": "Agroquímicos del Valle",
   "presentacion": "Bolsa 50kg"
 }
@@ -342,4 +342,4 @@
 | Eliminar (soft delete) | PATCH /api/{recurso}/{id}/eliminar |
 | Restaurar | PATCH /api/{recurso}/{id}/restaurar |
 
-**Donde {recurso} = usuarios, parcelas, productos, cultivos**
+**Donde {recurso} = usuarios, parcelas, insumos, cultivos**

@@ -4,15 +4,15 @@ GO
 USE agro_pacayales;
 GO
 
--- Tabla de productos agrícolas (US4: Inventario de abonos y químicos)
-CREATE TABLE producto (
-    id_producto INT IDENTITY(1,1) PRIMARY KEY,
+-- Tabla de insumos agrícolas (US4: Inventario de abonos y químicos)
+CREATE TABLE insumos (
+    id_insumo INT IDENTITY(1,1) PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     descripcion VARCHAR(MAX),
     precio DECIMAL(10,2) NOT NULL,
     stock INT NOT NULL,
     unidad_medida VARCHAR(20),
-    tipo_producto VARCHAR(50),
+    tipo_insumo VARCHAR(50),
     proveedor VARCHAR(100),
     presentacion VARCHAR(100),
     estado BIT DEFAULT 1,
@@ -120,15 +120,15 @@ BEGIN
     CREATE TABLE detalle_actividad (
         id_detalle INT IDENTITY(1,1) PRIMARY KEY,
         id_actividad INT NOT NULL,
-        id_producto INT NOT NULL,
+        id_insumo INT NOT NULL,
         cantidad INT NOT NULL,
         precio_unitario DECIMAL(10,2) NOT NULL,
         subtotal DECIMAL(10,2) NOT NULL,
         CONSTRAINT FK_detalle_actividad_cabecera FOREIGN KEY (id_actividad) 
             REFERENCES actividad_cultivo(id_actividad) 
             ON DELETE CASCADE,
-        CONSTRAINT FK_detalle_actividad_producto FOREIGN KEY (id_producto) 
-            REFERENCES producto(id_producto) 
+        CONSTRAINT FK_detalle_actividad_insumo FOREIGN KEY (id_insumo) 
+            REFERENCES insumos(id_insumo) 
             ON DELETE NO ACTION
     );
 END

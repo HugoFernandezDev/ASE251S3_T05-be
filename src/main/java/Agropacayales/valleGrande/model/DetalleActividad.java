@@ -27,8 +27,8 @@ public class DetalleActividad {
     private ActividadCultivo actividadCultivo;
 
     @ManyToOne
-    @JoinColumn(name = "id_producto", nullable = false)
-    private Producto producto;
+    @JoinColumn(name = "id_insumo", nullable = false)
+    private Insumo insumo;
 
     @Column(name = "cantidad", nullable = false)
     private Integer cantidad;

@@ -8,21 +8,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "producto")
+@Table(name = "insumos")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Producto {
+public class Insumo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_producto")
-    private Long idProducto;
+    @Column(name = "id_insumo")
+    private Long idInsumo;
 
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
@@ -39,8 +38,8 @@ public class Producto {
     @Column(name = "unidad_medida", length = 20)
     private String unidadMedida;
 
-    @Column(name = "tipo_producto", length = 50)
-    private String tipoProducto;
+    @Column(name = "tipo_insumo", length = 50)
+    private String tipoInsumo;
 
     @Column(name = "proveedor", length = 100)
     private String proveedor;
