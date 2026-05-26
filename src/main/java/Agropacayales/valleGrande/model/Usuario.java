@@ -39,6 +39,10 @@ public class Usuario {
     private String rol;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "fecha_nacimiento")
+    private LocalDate fechaNacimiento; 
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "fecha_contratacion")
     private LocalDate fechaContratacion;
 

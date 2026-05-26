@@ -78,6 +78,7 @@ CREATE TABLE usuarios (
     correo VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255),
     rol VARCHAR(20) DEFAULT 'OPERADOR',
+    fecha_nacimiento DATE NOT NULL, 
     fecha_contratacion DATE,
     estado BIT DEFAULT 1,
     created_at DATETIME2,
@@ -85,11 +86,6 @@ CREATE TABLE usuarios (
     deleted_at DATETIME2,
     restored_at DATETIME2
 );
-GO
-
--- Insertar usuario administrador por defecto
-INSERT INTO usuarios (nombre, apellido, correo, password, rol, estado)
-VALUES ('Administrador', 'General', 'admin@agropacayales.com', 'SqlPassword2026!', 'ADMIN', 1);
 GO
 
 -- Tabla de actividades de cultivo (US6: Actividades y control de cultivos)
@@ -132,4 +128,4 @@ BEGIN
             ON DELETE NO ACTION
     );
 END
-GO
+GO
