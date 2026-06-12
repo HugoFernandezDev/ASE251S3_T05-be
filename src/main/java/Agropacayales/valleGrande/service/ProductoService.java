@@ -27,4 +27,10 @@ public interface ProductoService {
 
     // Restaurar lógico (cambiar estado a true)
     Producto restaurar(Long id);
+
+    // Buscar productos por nombre (coincidencia parcial)
+    List<Producto> buscarPorNombre(String nombre);
+
+    // Filtrar productos por tipo
+    List<Producto> filtrarPorTipo(String tipo);
 }

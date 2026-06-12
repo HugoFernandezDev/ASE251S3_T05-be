@@ -91,4 +91,14 @@ public class ProductoServiceImpl implements ProductoService {
         }
         return null;
     }
+
+    @Override
+    public List<Producto> buscarPorNombre(String nombre) {
+        return productoRepository.findByNombreContainingIgnoreCase(nombre);
+    }
+
+    @Override
+    public List<Producto> filtrarPorTipo(String tipo) {
+        return productoRepository.findByTipoProductoIgnoreCase(tipo);
+    }
 }

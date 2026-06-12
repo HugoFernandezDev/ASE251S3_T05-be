@@ -98,4 +98,20 @@ public class ProductoController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    // GET - Buscar productos por nombre
+    @GetMapping("/buscar")
+    @Operation(summary = "Buscar productos por nombre", description = "Busca productos cuyo nombre contenga la cadena proporcionada (ignora mayúsculas/minúsculas)")
+    public ResponseEntity<List<Producto>> buscarPorNombre(@RequestParam String nombre) {
+        List<Producto> productos = productoService.buscarPorNombre(nombre);
+        return ResponseEntity.ok(productos);
+    }
+
+    // GET - Filtrar productos por tipo
+    @GetMapping("/filtrar")
+    @Operation(summary = "Filtrar productos por tipo", description = "Filtra productos según su categoría o tipo (ignora mayúsculas/minúsculas)")
+    public ResponseEntity<List<Producto>> filtrarPorTipo(@RequestParam String tipo) {
+        List<Producto> productos = productoService.filtrarPorTipo(tipo);
+        return ResponseEntity.ok(productos);
+    }
 }
