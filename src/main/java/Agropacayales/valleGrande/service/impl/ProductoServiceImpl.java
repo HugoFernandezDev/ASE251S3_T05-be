@@ -1,5 +1,6 @@
 package Agropacayales.valleGrande.service.impl;
 
+import Agropacayales.valleGrande.exception.BusinessValidationException;
 import Agropacayales.valleGrande.model.Producto;
 import Agropacayales.valleGrande.repository.ProductoRepository;
 import Agropacayales.valleGrande.service.ProductoService;
@@ -33,6 +34,9 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public Producto crear(Producto producto) {
+        if (productoRepository.existsByNombreIgnoreCase(producto.getNombre())) {
+            throw new BusinessValidationException("Ya existe un producto con el nombre: " + producto.getNombre());
+        }
         LocalDateTime now = LocalDateTime.now();
         producto.setEstado(true);
         producto.setCreatedAt(now);
@@ -46,6 +50,9 @@ public class ProductoServiceImpl implements ProductoService {
     public Producto editar(Long id, Producto producto) {
         Optional<Producto> existente = productoRepository.findById(id);
         if (existente.isPresent()) {
+            if (productoRepository.existsByNombreIgnoreCaseAndIdProductoNot(producto.getNombre(), id)) {
+                throw new BusinessValidationException("Ya existe otro producto con el nombre: " + producto.getNombre());
+            }
             Producto productoActualizar = existente.get();
             productoActualizar.setUpdatedAt(LocalDateTime.now());
             productoActualizar.setNombre(producto.getNombre());
