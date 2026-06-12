@@ -2,6 +2,7 @@ package Agropacayales.valleGrande.rest;
 
 import Agropacayales.valleGrande.model.Producto;
 import Agropacayales.valleGrande.service.ProductoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,14 +42,14 @@ public class ProductoController {
 
     // POST - Crear nuevo producto
     @PostMapping
-    public ResponseEntity<Producto> crear(@RequestBody Producto producto) {
+    public ResponseEntity<Producto> crear(@Valid @RequestBody Producto producto) {
         Producto nuevoProducto = productoService.crear(producto);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoProducto);
     }
 
     // PUT - Editar producto existente
     @PutMapping("/{id}")
-    public ResponseEntity<Producto> editar(@PathVariable Long id, @RequestBody Producto producto) {
+    public ResponseEntity<Producto> editar(@PathVariable Long id, @Valid @RequestBody Producto producto) {
         Producto productoEditado = productoService.editar(id, producto);
         if (productoEditado != null) {
             return ResponseEntity.ok(productoEditado);
