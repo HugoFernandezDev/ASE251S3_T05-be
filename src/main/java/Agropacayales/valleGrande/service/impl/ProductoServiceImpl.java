@@ -5,6 +5,8 @@ import Agropacayales.valleGrande.model.Producto;
 import Agropacayales.valleGrande.repository.ProductoRepository;
 import Agropacayales.valleGrande.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -100,5 +102,10 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public List<Producto> filtrarPorTipo(String tipo) {
         return productoRepository.findByTipoProductoIgnoreCase(tipo);
+    }
+
+    @Override
+    public Page<Producto> listarPaginado(Pageable pageable) {
+        return productoRepository.findAll(pageable);
     }
 }

@@ -7,6 +7,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -112,6 +115,14 @@ public class ProductoController {
     @Operation(summary = "Filtrar productos por tipo", description = "Filtra productos según su categoría o tipo (ignora mayúsculas/minúsculas)")
     public ResponseEntity<List<Producto>> filtrarPorTipo(@RequestParam String tipo) {
         List<Producto> productos = productoService.filtrarPorTipo(tipo);
+        return ResponseEntity.ok(productos);
+    }
+
+    // GET - Listar productos paginados
+    @GetMapping("/paginado")
+    @Operation(summary = "Listar productos con paginación", description = "Obtiene una página de productos indicando tamaño de página, número de página y ordenación")
+    public ResponseEntity<Page<Producto>> listarPaginado(@PageableDefault(size = 10, page = 0) Pageable pageable) {
+        Page<Producto> productos = productoService.listarPaginado(pageable);
         return ResponseEntity.ok(productos);
     }
 }
