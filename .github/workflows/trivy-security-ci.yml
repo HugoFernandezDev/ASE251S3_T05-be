@@ -21,6 +21,9 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
+      - name: Resolve Maven dependencies
+        run: mvn dependency:resolve-plugins dependency:resolve
+
       - name: Run Trivy vulnerability scanner (FS Scan)
         uses: aquasecurity/trivy-action@master
         with:
