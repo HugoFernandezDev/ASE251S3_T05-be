@@ -27,4 +27,13 @@ public interface InsumoService {
 
     // Restaurar lógico (cambiar estado a true)
     Insumo restaurar(Long id);
+
+    // Buscar insumos por nombre (coincidencia parcial, insensible a mayúsculas)
+    List<Insumo> buscarPorNombre(String nombre);
+
+    // Filtrar insumos por tipo
+    List<Insumo> filtrarPorTipo(String tipo);
+
+    // Listado paginado de insumos
+    org.springframework.data.domain.Page<Insumo> listarPaginado(org.springframework.data.domain.Pageable pageable);
 }

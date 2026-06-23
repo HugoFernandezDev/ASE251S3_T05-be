@@ -46,6 +46,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
             u.setCorreo(datos.getCorreo());
             u.setPassword(datos.getPassword());
             u.setRol(datos.getRol());
+            u.setFechaNacimiento(datos.getFechaNacimiento()); 
             u.setFechaContratacion(datos.getFechaContratacion());
             u.setUpdatedAt(LocalDateTime.now());
             return repository.save(u);

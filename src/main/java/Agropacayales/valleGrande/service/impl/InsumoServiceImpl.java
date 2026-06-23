@@ -5,6 +5,8 @@ import Agropacayales.valleGrande.model.Insumo;
 import Agropacayales.valleGrande.repository.InsumoRepository;
 import Agropacayales.valleGrande.service.InsumoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -186,5 +188,20 @@ public class InsumoServiceImpl implements InsumoService {
                 "El precio ingresado ($" + insumo.getPrecio() + ") supera el precio unitario maximo razonable ($50,000.00)."
             );
         }
+    }
+
+    @Override
+    public List<Insumo> buscarPorNombre(String nombre) {
+        return insumoRepository.findByNombreContainingIgnoreCase(nombre);
+    }
+
+    @Override
+    public List<Insumo> filtrarPorTipo(String tipo) {
+        return insumoRepository.findByTipoInsumoIgnoreCase(tipo);
+    }
+
+    @Override
+    public Page<Insumo> listarPaginado(Pageable pageable) {
+        return insumoRepository.findAll(pageable);
     }
 }

@@ -65,7 +65,7 @@ BEGIN
         restored_at DATETIME2,
         CONSTRAINT FK_cultivos_parcelas FOREIGN KEY (id_parcela) 
             REFERENCES parcelas(id_parcela) 
-            ON DELETE NO ACTION -- Cambio aquí de RESTRICT a NO ACTION
+            ON DELETE NO ACTION
     );
 END
 GO
@@ -78,6 +78,7 @@ CREATE TABLE usuarios (
     correo VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255),
     rol VARCHAR(20) DEFAULT 'OPERADOR',
+    fecha_nacimiento DATE NOT NULL,
     fecha_contratacion DATE,
     estado BIT DEFAULT 1,
     created_at DATETIME2,
@@ -88,8 +89,8 @@ CREATE TABLE usuarios (
 GO
 
 -- Insertar usuario administrador por defecto
-INSERT INTO usuarios (nombre, apellido, correo, password, rol, estado)
-VALUES ('Administrador', 'General', 'admin@agropacayales.com', 'SqlPassword2026!', 'ADMIN', 1);
+INSERT INTO usuarios (nombre, apellido, correo, password, rol, fecha_nacimiento, estado)
+VALUES ('Administrador', 'General', 'admin@agropacayales.com', 'SqlPassword2026!', 'ADMIN', '1990-01-01', 1);
 GO
 
 -- Tabla de actividades de cultivo (US6: Actividades y control de cultivos)
@@ -98,7 +99,7 @@ BEGIN
     CREATE TABLE actividad_cultivo (
         id_actividad INT IDENTITY(1,1) PRIMARY KEY,
         id_cultivo INT NOT NULL,
-        tipo_actividad VARCHAR(50) NOT NULL, -- E.g. SIEMBRA, RIEGO, COSECHA, FUMIGACION, ABONADO
+        tipo_actividad VARCHAR(50) NOT NULL,
         descripcion VARCHAR(MAX),
         fecha_actividad DATETIME2 NOT NULL,
         costo_total DECIMAL(10,2) NOT NULL,
@@ -132,4 +133,4 @@ BEGIN
             ON DELETE NO ACTION
     );
 END
-GO
+GO

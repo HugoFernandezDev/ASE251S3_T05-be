@@ -3,11 +3,7 @@ package Agropacayales.valleGrande.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -54,7 +50,6 @@ public class Insumo {
 
     @NotBlank(message = "El tipo de insumo es obligatorio.")
     @Size(max = 50, message = "El tipo de insumo no puede superar los 50 caracteres.")
-
     @Column(name = "tipo_insumo", length = 50)
     private String tipoInsumo;
 
